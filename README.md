@@ -5,3 +5,5 @@
 - apollo
     - https://www.apollographql.com/docs/react/get-started/
     - apollo dev tool (chrome)
+
+- npm install react-router-dom

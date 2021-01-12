@@ -1,15 +1,10 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
 import {client} from "./apollo";
+import { LoggedOutRouter } from './routers/logged-out-router';
 
 function App() {
-  return (
-    <ApolloProvider client={client}>
-    <div className="bg-black"> 
-      <h1 className="text-xl text-white ">hello tailwind</h1>
-    </div>
-    </ApolloProvider>
-  );
+  return <LoggedOutRouter />;
 }
 
 export default App;

@@ -1,13 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { isLoggedInVar } from "../apollo";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom"
+import { CreateAccount } from "../pages/create-account";
+import { Login } from "../pages/login";
 
+/*
 interface IForm {
     email: string;
     password: string;
   }  
+*/
 
 export const LoggedOutRouter = () => {
+    /*
     const { register, watch, handleSubmit, errors } = useForm<IForm>();
     const onSubmit = () => {
       console.log(watch());
@@ -16,7 +22,20 @@ export const LoggedOutRouter = () => {
       console.log("cant create account");
     };
     console.log("errors", errors);
+    */
     return (
+        <Router>
+            <Switch>
+                <Route path="/create-account">
+                    <CreateAccount />
+                </Route>
+                <Route path="/">
+                    <Login />
+                </Route>
+            </Switch>
+        </Router>
+        
+        /*
       <div>
         <h1>Logged Out</h1>
         <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -51,5 +70,6 @@ export const LoggedOutRouter = () => {
           <button className="bg-yellow-300 text-white">Submit</button>
         </form>
       </div>
+      */
     );
   };

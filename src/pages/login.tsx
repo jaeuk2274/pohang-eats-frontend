@@ -26,7 +26,7 @@ export const Login = () => {
       loginMutation({
         variables: {
           email,
-          password: 1212121112,
+          password: ,
         },
       });
     };

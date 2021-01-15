@@ -8,8 +8,8 @@ import {
 } from "../__generated__/loginMutation";
 
 const LOGIN_MUTATION = gql`
-  mutation loginMutation($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
+  mutation loginMutation($loginInput: LoginInput!) {
+    login(input: $loginInput) {
       ok
       token
       error
@@ -29,8 +29,10 @@ export const Login = () => {
       const { email, password } = getValues();
       loginMutation({
         variables: {
-          email,
-          password
+          loginInput: {
+            email,
+            password,
+          },
         },
       });
     };

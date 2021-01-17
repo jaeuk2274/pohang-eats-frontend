@@ -9,4 +9,4 @@
 - npm install react-router-dom
 
 - rimraf
-    - win,moc,linux 크로스 플랫폼 명령어 지원 
+    - win,moc,linux 크로스 플랫폼 명령어 지원 / rm rf

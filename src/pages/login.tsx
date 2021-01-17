@@ -34,20 +34,22 @@ export const Login = () => {
     }
   };
   const onError = (error: ApolloError) => {console.log('onError')} // return ok:false는 에러 아님.
-  const [loginMutation, { data: loginMutationResult }] = useMutation<loginMutation, loginMutationVariables>(LOGIN_MUTATION, {
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<loginMutation, loginMutationVariables>(LOGIN_MUTATION, {
     onCompleted,
     onError
   });;
   const onSubmit = () => {
-    const { email, password } = getValues();
-    loginMutation({
-      variables: {
-        loginInput: {
-          email,
-          password,
+    if(!loading){
+      const { email, password } = getValues();
+      loginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   return (
@@ -83,7 +85,9 @@ export const Login = () => {
           {errors.password?.type === "minLength" && (
             <FormError errorMessage="Password must be more than 10 chars." />
           )}
-          <button className="mt-3 btn">Log In</button>
+          <button className="mt-3 btn">
+            {loading ? "Loading..." : "Log In"}
+          </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}

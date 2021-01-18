@@ -3,9 +3,10 @@ import React from "react";
 import Helmet from 'react-helmet'
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { isLoggedInVar } from "../apollo";
+import { authTokenVar, isLoggedInVar } from "../apollo";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
+import { LOCALSTORAGE_TOKEN } from "../constants";
 import poberLogo from "../images/logo.svg";
 import {
   loginMutation,
@@ -41,8 +42,9 @@ export const Login = () => {
     const {
       login: { error, ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authTokenVar(token);
       isLoggedInVar(true);
     }
   };

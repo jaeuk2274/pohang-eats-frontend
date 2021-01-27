@@ -1,6 +1,6 @@
-@@ -0,0 +1,40 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import React, { useEffect } from "react";
+import { useMe } from "../../hooks/useMe";
 import {
   verifyEmail,
   verifyEmailVariables,
@@ -16,20 +16,45 @@ const VERIFY_EMAIL_MUTATION = gql`
 `;
 
 export const ConfirmEmail = () => {
-  const [verifyEmail, { loading: verifyingEmail }] = useMutation<
-    verifyEmail,
-    verifyEmailVariables
-  >(VERIFY_EMAIL_MUTATION);
+  const { data: userData } = useMe();
+  const client = useApolloClient();
+  const onCompleted = (data: verifyEmail) => {
+    console.log(verifyEmail);
+    const {
+      verifyEmail: { ok },
+    } = data;
+    if (ok && userData?.me.id) {
+      client.writeFragment({
+        id: `User:${userData.me.id}`,
+        fragment: gql`
+          fragment VerifiedUser on User {
+            verified
+          }
+        `,
+        data: {
+          verified: true,
+        },
+      });
+    }
+  };
+  const [verifyEmail] = useMutation<verifyEmail, verifyEmailVariables>(
+    VERIFY_EMAIL_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+
   useEffect(() => {
-    const [_, code] = window.location.href.split("code=");
-    /*     verifyEmail({
+    const [_, code] = window.location.href.split("code=");  
+    verifyEmail({
       variables: {
         input: {
           code,
         },
       },
-    }); */
+    });
   }, []);
+
   return (
     <div className="mt-52 flex flex-col items-center justify-center">
       <h2 className="text-lg mb-1 font-medium">Confirming email...</h2>
@@ -39,3 +64,4 @@ export const ConfirmEmail = () => {
     </div>
   );
 };
+

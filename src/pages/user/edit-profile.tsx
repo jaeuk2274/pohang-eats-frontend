@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../components/button";
@@ -22,13 +22,35 @@ interface IFormProps {
   }
 
 export const EditProfile = () => {
-  const { data: userData } = useMe();
+  const { data: userData, refetch } = useMe();
+  const client = useApolloClient();
+  //const onCompleted = async (data: editProfile) => {
   const onCompleted = (data: editProfile) => {
     const {
       editProfile: { ok },
     } = data;
-    if (ok) {
-      // update the cache
+    if (ok && userData) {
+        //await refetch(); 1.그냥 refetch 하는 방법
+        //2.cache 바로 반영(더 빠르겠죠)
+        const {
+          me: { email: prevEmail, id },
+        } = userData;
+        const { email: newEmail } = getValues();
+        if (prevEmail !== newEmail) {
+          client.writeFragment({
+            id: `User:${id}`,
+            fragment: gql`
+              fragment EditedUser on User {
+                verified
+                email
+              }
+            `,
+            data: {
+              email: newEmail,
+              verified: false,
+            },
+          });
+        }
     }
   };
   const [editProfile, { loading }] = useMutation<

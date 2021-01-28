@@ -62,12 +62,12 @@ export const Restaurants = () => {
       <div className="max-w-screen-2xl mx-auto mt-8">
         <div className="flex justify-around max-w-xs mx-auto">
           {data?.allCategories.categories?.map((category) => (
-            <div className="flex flex-col items-center cursor-pointer">
+            <div className="flex flex-col group items-center cursor-pointer">
               <div 
-                className="w-14 h-14 bg-cover hover:bg-gray-100 rounded-full"
+                className="w-16 h-14 bg-cover group-hover:bg-gray-100 rounded-full"
                 style={{ backgroundImage: `url(${category.coverImg})` }}
               ></div>
-              <span className="text-sm text-center font-medium">
+              <span className="mt-1 text-sm text-center font-medium">
                 {category.name}
               </span>
             </div>

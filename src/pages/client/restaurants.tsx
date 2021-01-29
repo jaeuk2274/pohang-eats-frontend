@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { Restaurant } from "../../components/restaurant";
+import { Helmet } from "react-helmet-async";
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
 } from "../../__generated__/restaurantsPageQuery";
+import { RESTAURANT_FRAGMENT } from "../../fragments";
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPageQuery($input: RestaurantsInput!){
@@ -27,17 +29,11 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalResults
       results {
-        id
-        name
-        coverImg
-        category{
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
 
 interface IFormProps {
@@ -67,7 +63,7 @@ export const Restaurants = () => {
         pathname: "/search",
         // 1.url 노출
         search: `?term=${searchTerm}`,
-        
+
         /* 2.url 노출시키지 않는 방법, but 검색 url 공유 불가
         state: {
           searchTerm
@@ -77,6 +73,9 @@ export const Restaurants = () => {
   };
   return (
     <div>
+      <Helmet>
+        <title>Home | Pohang Eats</title>
+      </Helmet>
       <form onSubmit={handleSubmit(onSearchSubmit)} className="bg-gray-800 w-full py-40 flex items-center justify-center">
         <input 
           ref={register({ required: true, min: 3 })}

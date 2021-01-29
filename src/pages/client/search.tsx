@@ -1,10 +1,67 @@
+import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { useHistory, useLocation } from "react-router-dom";
+import { RESTAURANT_FRAGMENT } from "../../fragments";
+import {
+    searchRestaurant,
+    searchRestaurantVariables,
+  } from "../../__generated__/searchRestaurant";
+  
+  const SEARCH_RESTAURANT = gql`
+    query searchRestaurant($input: SearchRestaurantInput!) {
+      searchRestaurant(input: $input) {
+        ok
+        error
+        totalPages
+        totalResults
+        restaurants {
+          ...RestaurantParts
+        }
+      }
+    }
+    ${RESTAURANT_FRAGMENT}
+  `;
 
 export const Search = () => {
     const location = useLocation();
+    const history = useHistory();
     useEffect(() => {
         console.log(location);
+        const [_, searchTerm] = location.search.split("?term=");
+        console.log(searchTerm);
+        if(!searchTerm){
+            return history.push("/");
+        }
     }, []);
-    return <h1>search page</h1>;
+
+    const [callQuery, { loading, data, called }] = useLazyQuery<
+        searchRestaurant,
+        searchRestaurantVariables
+    >(SEARCH_RESTAURANT);
+
+  useEffect(() => {
+    const [_, query] = location.search.split("?term=");
+    if (!query) {
+      return history.replace("/");
+    }
+    callQuery({
+      variables: {
+        input: {
+          page: 1,
+          query,
+        },
+      },
+    });
+  }, [history, location]);
+
+    console.log(loading, data, called);
+    return (
+      <div>
+        <Helmet>
+          <title>Search | Pohang Eats</title>
+        </Helmet>
+        <h1>Search page</h1>
+      </div>
+    );
 }

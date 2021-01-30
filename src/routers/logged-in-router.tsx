@@ -15,6 +15,7 @@ import { EditProfile } from "../pages/user/edit-profile";
 import { NotFound } from "../pages/404";
 import { Search } from "../pages/client/search";
 import { Category } from "../pages/client/category";
+import { Restaurant } from "../pages//client/restaurant";
 
 const ClientRoutes = [
   <Route key={1} path="/" exact>
@@ -32,6 +33,9 @@ const ClientRoutes = [
   <Route key={5} path="/category/:slug">
     <Category />
   </Route>,
+  <Route key={6} path="/restaurant/:id">
+    <Restaurant />
+  </Route>,  
 ];
 
 export const LoggedInRouter = () => {

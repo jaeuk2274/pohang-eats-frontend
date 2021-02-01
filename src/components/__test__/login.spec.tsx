@@ -37,7 +37,6 @@ describe("<Login />", () => {
       userEvent.type(email, "this@wont");
     });
     let errorMessage = getByRole("alert");
-    console.log(errorMessage);
     expect(errorMessage).toHaveTextContent(/please enter a valid email/i);
     await waitFor(() => {
       userEvent.clear(email);
@@ -55,7 +54,6 @@ describe("<Login />", () => {
       userEvent.click(submitBtn);
     });
     const errorMessage = getByRole("alert");
-    debug();
     expect(errorMessage).toHaveTextContent(/password is required/i);
   });
 
@@ -73,11 +71,12 @@ describe("<Login />", () => {
         login: {
           ok: true,
           token: "XXX",
-          error: null,
+          error: "mutation-error",
         },
       },
     });
     mockedClient.setRequestHandler(LOGIN_MUTATION, mockedMutationResponse);
+    jest.spyOn(Storage.prototype, "setItem");
     await waitFor(() => {
       userEvent.type(email, formData.email);
       userEvent.type(password, formData.password);
@@ -90,4 +89,8 @@ describe("<Login />", () => {
         password: formData.password,
       },
     });
+    const errorMessage = getByRole("alert");
+    expect(errorMessage).toHaveTextContent(/mutation-error/i);
+    expect(localStorage.setItem).toHaveBeenCalledWith("pober-token", "XXX");
+  });
 });

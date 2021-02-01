@@ -21,7 +21,7 @@ describe("<Render />", () => {
         getByText(restaurantProps.categoryName);
         expect(container.firstChild).toHaveAttribute(
             "href", 
-            `/restaurants/${restaurantProps.id}`
-        )
+            `/restaurant/${restaurantProps.id}`
+        );
     })
 })

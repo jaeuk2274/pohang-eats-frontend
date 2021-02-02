@@ -1962,6 +1962,14 @@
     "@svgr/plugin-svgo" "^5.4.0"
     "loader-utils" "^2.0.0"
 
+"@testing-library/cypress@^7.0.3":
+  "integrity" "sha512-JOYW4VSSyHxaZDUhrS5N7tZA8jhr3ISx73WnLPpNkPqDCLUIJpo8ZQihti68Q4Qv5hVuA+I2rUI2glORaEFPaA=="
+  "resolved" "https://registry.npmjs.org/@testing-library/cypress/-/cypress-7.0.3.tgz"
+  "version" "7.0.3"
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@testing-library/dom" "^7.28.1"
+
 "@testing-library/dom@^7.28.1":
   "integrity" "sha512-CBMELfyY1jKdtLcSRmEnZWRzRkCRVSNPTzhzrn8wY8OnzUo7Pe/W+HgLzt4TDnWIPYeusHBodf9wUjJF48kPmA=="
   "resolved" "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.29.2.tgz"
@@ -4942,7 +4950,7 @@
   "resolved" "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz"
   "version" "1.0.1"
 
-"cypress@^6.4.0":
+"cypress@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0", "cypress@^6.4.0":
   "integrity" "sha512-SrsPsZ4IBterudkoFYBvkQmXOVxclh1/+ytbzpV8AH/D2FA+s2Qy5ISsaRzOFsbQa4KZWoi3AKwREmF1HucYkg=="
   "resolved" "https://registry.npmjs.org/cypress/-/cypress-6.4.0.tgz"
   "version" "6.4.0"

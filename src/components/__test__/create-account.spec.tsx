@@ -6,6 +6,20 @@ import { CREATE_ACCOUNT_MUTATION , CreateAccount } from "../../pages/create-acco
 import { render, waitFor, RenderResult } from "../../test-utils";
 import { UserRole } from "../../__generated__/globalTypes";
 
+const mockPush = jest.fn();
+
+jest.mock("react-router-dom", () => {
+  const realModule = jest.requireActual("react-router-dom"); // 해당 모듈 전체에서 내가 원하는 것만 mock 
+  return {
+    ...realModule, // 없으면 전체
+    useHistory: () => {
+      return {
+        push: mockPush,
+      };
+    },
+  };
+});
+
 describe("<CreateAccount />", () => {
   let mockedClient: MockApolloClient;
   let renderResult: RenderResult;
@@ -88,6 +102,12 @@ describe("<CreateAccount />", () => {
     });
     expect(window.alert).toHaveBeenCalledWith("Account Created! Log in now!");
     const mutationError = getByRole("alert");
+    expect(mockPush).toHaveBeenCalledWith("/");
     expect(mutationError).toHaveTextContent("mutation-error");
+  });
+
+  // mock 한 뒤 항상 clear
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 });
